@@ -1,2 +1,0 @@
-com/cours/lecteuraudio/BuildConfig.java
- com.cours.lecteuraudio.BuildConfig
