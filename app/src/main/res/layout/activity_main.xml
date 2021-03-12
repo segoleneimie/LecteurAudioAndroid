@@ -5,12 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/buttonBarButtonStyle"
+        >
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_play_arrow_24"
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_pause_24"
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_stop_24"
+            />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/liste_musiques"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
