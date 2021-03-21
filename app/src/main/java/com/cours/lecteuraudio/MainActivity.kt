@@ -18,22 +18,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // à ajouter pour de meilleures performances :
-        liste_musiques.setHasFixedSize(true)
 
-        // layout manager, décrivant comment les items sont disposés :
-        val layoutManager = LinearLayoutManager(this)
-        liste_musiques.layoutManager = layoutManager
-        // contenu d'exemple :
-        val listeMusique: MutableList<Musique> = ArrayList()
-        for (i in 0..50){
-            listeMusique.add(Musique("Pommes", "30Mo", "3min"))
-            listeMusique.add(Musique("Poires", "30Mo", "3min"))
-        }
 
-        // adapter :
-        val musiquesAdapter = MusiquesAdapter(listeMusique)
-        liste_musiques.adapter = musiquesAdapter
         Log.d("monTag", "onCreate")
         val permission = ContextCompat.checkSelfPermission(
             this,
@@ -41,11 +27,11 @@ class MainActivity : AppCompatActivity() {
         )
         if (permission == PackageManager.PERMISSION_GRANTED) {
             Log.d("monTag", "permission granted 2")
-            afficherMusics()
+            afficherMusiques()
         }
         else
         {
-// affichage de la popup de demande de permission :
+// affichage de la pop up de demande de permission :
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -67,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             {
                 Log.d("monTag", "permission granted 1")
                 // permission accordée, on peut accéder aux contacts sans risque
-                afficherMusics()
+                afficherMusiques()
             }
             else
             {
@@ -77,26 +63,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
     /**
-     * Affichage des contacts.
+     * Affichage de la liste des musiques.
      */
-    private fun afficherMusics()
+    private fun afficherMusiques()
     {
         Log.d("afficherMusics", "called")
         // chargement :
         val musicsDAO = MusicsDAO()
-        val listeMusics = musicsDAO.getListeMusics(this)
+        val listeMusiques = musicsDAO.getListeMusiques(this)
 
         // affichage de la liste de contacts :
-        val stringBuilderMusics = StringBuilder()
+//        val stringBuilderMusics = StringBuilder()
+        // PEUT ETRE UTILE POUR FORMATER LA TAILLE OU LA DUREE
 
-        for (music in listeMusics)
-        {
+        // à ajouter pour de meilleures performances :
+        liste_musiques.setHasFixedSize(true)
 
-            music.title?.let { Log.d("music", it) }
-            stringBuilderMusics.append(music.title).append(" : ").append(music.artist).append("\n")
-        }
+        // adapter :
+        val musiquesAdapter = MusiquesAdapter(listeMusiques as MutableList<Musique>)
+        liste_musiques.adapter = musiquesAdapter
 
-        texte_musics.text = stringBuilderMusics.toString()
+        // layout manager, décrivant comment les items sont disposés :
+        val layoutManager = LinearLayoutManager(this)
+        liste_musiques.layoutManager = layoutManager
     }
 
 

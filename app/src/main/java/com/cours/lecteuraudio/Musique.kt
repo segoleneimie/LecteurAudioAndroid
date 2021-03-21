@@ -1,4 +1,6 @@
 package com.cours.lecteuraudio
 
-class Musique(var titre: String, var taille: String, var duree: String) {
-}
+class Musique(var titre: String? = null,
+              val artiste: String? = null,
+              var taille: String? = null,
+              var duree: String? = null)

@@ -14,21 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LecteurAudio">
-
-
-
-
-
         <activity android:name=".MainActivity">
 
 <!--            android:screenOrientation="portrait">-->
-            <!--Nous garderons l'orientation de l'appareil en mode portrait pour plus de simplicité.
+<!--Nous garderons l'orientation de l'appareil en mode portrait pour plus de simplicité.
  Le launchMode aidera à la navigation,
  il permettra de revenir directement à l'application
  si l'utilisateur l'a quitté et ne lancera pas une nouvelle instance.-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
