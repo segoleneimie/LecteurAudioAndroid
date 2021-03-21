@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Lecteur Audio</string>
+    <string name="app_name">LecteurAudio</string>
+    <!-- Main -->
+    <string name="main_message_permission_refusee">Permission d\'accéder aux medias du téléphone refusée.</string>
 </resources>

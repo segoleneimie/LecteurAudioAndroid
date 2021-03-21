@@ -19,9 +19,9 @@
 
 
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".MainActivity">
 
-            android:screenOrientation="portrait">
+<!--            android:screenOrientation="portrait">-->
             <!--Nous garderons l'orientation de l'appareil en mode portrait pour plus de simplicité.
  Le launchMode aidera à la navigation,
  il permettra de revenir directement à l'application
