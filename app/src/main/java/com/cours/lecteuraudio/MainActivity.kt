@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -67,8 +66,8 @@ class MainActivity : AppCompatActivity() {
     {
         Log.d("afficherMusics", "called")
         // chargement :
-        val musicsDAO = MusicsDAO()
-        val listeMusiques = musicsDAO.getListeMusiques(this)
+        val musiquesDAO = MusiquesDAO()
+        val listeMusiques = musiquesDAO.getListeMusiques(this)
 
         // affichage de la liste de contacts :
 //        val stringBuilderMusics = StringBuilder()

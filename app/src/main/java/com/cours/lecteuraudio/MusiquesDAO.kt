@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 
-class MusicsDAO {
+class MusiquesDAO {
     fun getListeMusiques(context: Context): List<Musique>
     {
                 //retrieve song info
