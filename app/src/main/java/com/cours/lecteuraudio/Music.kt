@@ -1,7 +1,6 @@
 package com.cours.lecteuraudio
 
-data class Music( val id: Long,
-                  val title: String? = null,
-                  val artist: String? = null)
+data class Music(val title: String? = null,
+                 val artist: String? = null)
 
 
