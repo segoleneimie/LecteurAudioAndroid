@@ -14,11 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LecteurAudio">
-<<<<<<< HEAD
-        <activity android:name=".MainActivity">
-           
 
-<!--            android:screenOrientation="portrait">-->
+        <activity android:name=".MainActivity">
+   <!--            android:screenOrientation="portrait">-->
             <!--Nous garderons l'orientation de l'appareil en mode portrait pour plus de simplicité.
 >>>>>>> 5341526 (devSophie:fetch & display musics list)
  Le launchMode aidera à la navigation,
