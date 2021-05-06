@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:onClick="playItem"
     >
 
         <TextView
             android:id="@+id/titre_musique"
             android:layout_width="140dp"
             android:layout_height="20dp"
+
             />
 
         <TextView
@@ -24,10 +24,17 @@
             />
 
         <TextView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-        android:background="@drawable/ic_baseline_star_border_24"
-         />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_baseline_star_border_24"
+                 />
+        <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_baseline_star_24"
+                 />
+
+
 
 
 </LinearLayout>
