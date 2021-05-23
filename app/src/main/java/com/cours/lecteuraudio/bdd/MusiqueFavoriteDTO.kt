@@ -8,9 +8,10 @@ import androidx.room.PrimaryKey
 class MusiqueFavoriteDTO(
     @PrimaryKey(autoGenerate = true)
     val musiqueId: Long = 0,
-    val titre: String? = null,
-    val taille: String? = null,
-    val duree: String? = null)
+    var titre: String? = null,
+    var artiste: String? = null,
+    var taille: String? = null,
+    var duree: String? = null)
 {
 
 }

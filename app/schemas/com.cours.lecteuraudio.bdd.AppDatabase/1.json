@@ -1,0 +1,58 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a71b009ffa7f3f6c85dbf80d62fa7c8f",
+    "entities": [
+      {
+        "tableName": "musiquesFavorites",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`musiqueId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `titre` TEXT, `artiste` TEXT, `taille` TEXT, `duree` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "musiqueId",
+            "columnName": "musiqueId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titre",
+            "columnName": "titre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "artiste",
+            "columnName": "artiste",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taille",
+            "columnName": "taille",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "duree",
+            "columnName": "duree",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "musiqueId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a71b009ffa7f3f6c85dbf80d62fa7c8f')"
+    ]
+  }
+}

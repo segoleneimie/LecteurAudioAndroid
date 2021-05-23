@@ -1,6 +1,7 @@
 package com.cours.lecteuraudio.bdd
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 
 class AppDatabaseHelper (context: Context) {

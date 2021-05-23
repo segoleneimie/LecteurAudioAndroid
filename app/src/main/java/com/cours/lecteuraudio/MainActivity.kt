@@ -1,6 +1,7 @@
 package com.cours.lecteuraudio
 
 import android.Manifest
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -18,11 +19,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cours.lecteuraudio.bdd.AppDatabaseHelper
+import com.cours.lecteuraudio.bdd.MusiqueFavoriteDTO
+import com.cours.lecteuraudio.bdd.MusiquesFavoritesDAO
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_musique.*
 
 
 class MainActivity : AppCompatActivity() {
+
 
     // Référence :
     private var musicService: MusicService? = null
@@ -33,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("monTag", "onCreate")
         val permission = ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         )
         if (permission == PackageManager.PERMISSION_GRANTED) {
             Log.d("monTag", "permission granted 2")
@@ -44,17 +51,17 @@ class MainActivity : AppCompatActivity() {
         {
 // affichage de la pop up de demande de permission :
             ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    123
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                123
             )
         }
 //         Penser à informer l'utilisateur de la raison de la permission si elle est refusée.
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int, permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>,
+        grantResults: IntArray
     )
     {
 //        Log.d("PermissionsResult", "requestCode")
@@ -79,6 +86,8 @@ class MainActivity : AppCompatActivity() {
     private fun afficherMusiques()
     {
         Log.d("afficherMusics", "called")
+        buttonListeFavoris.isVisible = false
+        buttonGetListeFavoris.isVisible = true
         // chargement :
         val musiquesDAO = MusiquesDAO()
         val listeMusiques = musiquesDAO.getListeMusiques(this)
@@ -135,6 +144,64 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         musicService?.run { unbindService(connexion) }
     }
+
+    /**
+     * affiche les musiques favorites
+     */
+    fun getListeFavoris(view: View)
+    {
+        if (buttonListeFavoris.isVisible) {
+            afficherMusiques()
+        } else {
+
+            liste_musiques.adapter = null
+            Log.d("FAVORIS", "charge liste")
+            // chargement :
+            val musiquesFavoritesDAO = AppDatabaseHelper.getDatabase(this).musiquesFavoritesDAO()
+            val listeMusiquesFavorites = musiquesFavoritesDAO.getListeMusiquesFavorites()
+            Log.d("FAVORIS", listeMusiquesFavorites.toString())
+
+
+            if (!listeMusiquesFavorites.isNullOrEmpty())
+            {
+
+                val favorisList = mutableListOf<Musique>()
+                for (a in 0..listeMusiquesFavorites.lastIndex) {
+
+                    listeMusiquesFavorites[a].titre?.let {
+                        listeMusiquesFavorites[a].artiste?.let { it1 ->
+                            Musique(
+                                it,
+                                it1,
+                                listeMusiquesFavorites[a].taille,
+                                listeMusiquesFavorites[a].duree
+                            )
+                        }
+                    }?.let { favorisList.add(it) }
+                    // insérer la liste des favoris dans la liste des musiques de l'adapter
+                    val liste = favorisList?.let {
+                        MusiquesAdapter(it.toMutableList())
+                    }
+                    liste_musiques.adapter = liste
+
+                    // layout manager, décrivant comment les items sont disposés :
+                    val layoutManager = LinearLayoutManager(this)
+                    liste_musiques.layoutManager = layoutManager
+
+                }
+                buttonGetListeFavoris.isVisible = !buttonGetListeFavoris.isVisible
+                buttonListeFavoris.isVisible = !buttonListeFavoris.isVisible
+
+            } else {
+                Toast.makeText(this,"il n'y a pas de favoris d'enregistrés",Toast.LENGTH_LONG).show()
+            }
+        }
+
+
+
+    }
+
+
 
 
 }
