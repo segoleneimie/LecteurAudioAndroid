@@ -17,17 +17,7 @@
             android:name=".MusicService"
             android:enabled="true"
             android:exported="true"></service>
-
         <activity android:name=".MainActivity">
-
-            <!-- android:screenOrientation="portrait"> -->
-            <!--
-Nous garderons l'orientation de l'appareil en mode portrait pour plus de simplicité.
->>>>>>> 5341526 (devSophie:fetch & display musics list)
- Le launchMode aidera à la navigation,
- il permettra de revenir directement à l'application
- si l'utilisateur l'a quitté et ne lancera pas une nouvelle instance.
-            -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

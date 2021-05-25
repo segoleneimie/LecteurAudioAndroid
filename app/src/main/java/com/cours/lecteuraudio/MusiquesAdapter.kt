@@ -1,6 +1,11 @@
 package com.cours.lecteuraudio
 
 import android.content.Context
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
+import android.media.MediaPlayer
+import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +22,37 @@ import com.cours.lecteuraudio.MainActivity
 class MusiquesAdapter(private var listeMusique: MutableList<Musique>) :
 RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
 {
+    // Référence :
+    private var musicService: MusicService? = null
+
+    private var mediaPlayer: MediaPlayer? = null
+
+    // Callback pour le binding, via un ServiceConnection :
+    private val connexion: ServiceConnection = object : ServiceConnection
+    {
+        override fun onServiceConnected(className: ComponentName, binder: IBinder)
+        {
+            musicService = (binder as MusicService.MonBinder).service
+        }
+        override fun onServiceDisconnected(className: ComponentName)
+        {
+            musicService = null
+        }
+
+
+    }
+
+//    fun onStart()
+//    {
+//        super.onStart()
+//        val intent = Intent(this, MusicService::class.java)
+//        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
+//    }
+//    fun onStop()
+//    {
+//        super.onStop()
+//        musicService?.run { unbindService(connexion) }
+//    }
 
 
     // Crée chaque vue item à afficher :
@@ -80,5 +116,43 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
 
 
     }
+
+
+        init
+        {
+            textViewTitreMusique.setOnClickListener {
+                val musique = listeMusique[adapterPosition]
+                Log.d("position", "$adapterPosition")
+                musique.titre?.let { it1 -> Log.d("titre", it1) }
+              Log.d("uri", "${musique.uri}")
+                Log.d("playItem", "click item ok")
+//        Log.i("tag", "nombre : ${musicService?.getNombre()}")
+                val musiqueURI = musique.uri
+
+//        START MUSIC SERVICE
+                val intent = Intent(itemView.context, MusicService::class.java)
+                intent.putExtra("action", "PLAY")
+                intent.putExtra("musiqueURI", "$musiqueURI")
+//                itemView.context.bindService(intent, connexion, itemView)
+                itemView.context.startService(intent)
+            }
+        }
+    }
+
+//    fun playItem(itemView: View, musique: Musique)
+//    {
+//        Log.d("playItem", "click item ok")
+////        Log.i("tag", "nombre : ${musicService?.getNombre()}")
+//
+////        START MUSIC SERVICE
+//        val intent = Intent(itemView.context, MusicService::class.java)
+////        intent.putExtra()
+//        bindService(intent, connexion, itemView.context)
+//        itemView.context.startService(intent)
+//
+//    }
+
+
+
 
 }

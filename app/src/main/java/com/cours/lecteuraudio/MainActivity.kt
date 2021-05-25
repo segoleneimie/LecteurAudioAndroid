@@ -30,9 +30,23 @@ import kotlinx.android.synthetic.main.item_musique.*
 
 class MainActivity : AppCompatActivity() {
 
-
-    // Référence :
-    private var musicService: MusicService? = null
+//    // Référence :
+//    private var musicService: MusicService? = null
+//
+//    // Callback pour le binding, via un ServiceConnection :
+//    private val connexion: ServiceConnection = object : ServiceConnection
+//    {
+//        override fun onServiceConnected(className: ComponentName, binder: IBinder)
+//        {
+//            musicService = (binder as MusicService.MonBinder).service
+//        }
+//        override fun onServiceDisconnected(className: ComponentName)
+//        {
+//            musicService = null
+//        }
+//
+//
+//    }
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -108,42 +122,32 @@ class MainActivity : AppCompatActivity() {
         liste_musiques.layoutManager = layoutManager
     }
 
-    fun playItem(view: View)
-    {
-        Log.d("playItem", "click item ok")
-        Log.i("tag", "nombre : ${musicService?.getNombre()}")
-//        START MUSIC SERVICE
-        val intent = Intent(this, MusicService::class.java)
-        startService(intent)
-
-    }
-
-    // Callback pour le binding, via un ServiceConnection :
-    private val connexion: ServiceConnection = object : ServiceConnection
-    {
-        override fun onServiceConnected(className: ComponentName, binder: IBinder)
-        {
-            musicService = (binder as MusicService.MonBinder).service
-        }
-        override fun onServiceDisconnected(className: ComponentName)
-        {
-            musicService = null
-        }
+//    fun playItem(view: View)
+//    {
+//        Log.d("playItem", "click item ok")
+//        Log.i("tag", "nombre : ${musicService?.getNombre()}")
+//
+////        START MUSIC SERVICE
+//        val intent = Intent(this, MusicService::class.java)
+////        intent.putExtra()
+//        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
+//        startService(intent)
+//
+//    }
 
 
-    }
 
-    override fun onStart()
-    {
-        super.onStart()
-        val intent = Intent(this, MusicService::class.java)
-        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
-    }
-    override fun onStop()
-    {
-        super.onStop()
-        musicService?.run { unbindService(connexion) }
-    }
+//    override fun onStart()
+//    {
+//        super.onStart()
+//        val intent = Intent(this, MusicService::class.java)
+//        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
+//    }
+//    override fun onStop()
+//    {
+//        super.onStop()
+//        musicService?.run { unbindService(connexion) }
+//    }
 
     /**
      * affiche les musiques favorites
