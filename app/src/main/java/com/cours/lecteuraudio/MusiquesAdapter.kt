@@ -112,19 +112,11 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 buttonEnregistreFav.isVisible = !buttonEnregistreFav.isVisible
                 Log.d("FAVORIS", "supprime favoris")
             }
-        }
-
-
-    }
-
-
-        init
-        {
             textViewTitreMusique.setOnClickListener {
                 val musique = listeMusique[adapterPosition]
                 Log.d("position", "$adapterPosition")
                 musique.titre?.let { it1 -> Log.d("titre", it1) }
-              Log.d("uri", "${musique.uri}")
+                Log.d("uri", "${musique.uri}")
                 Log.d("playItem", "click item ok")
 //        Log.i("tag", "nombre : ${musicService?.getNombre()}")
                 val musiqueURI = musique.uri
@@ -137,7 +129,10 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 itemView.context.startService(intent)
             }
         }
+
     }
+
+}
 
 //    fun playItem(itemView: View, musique: Musique)
 //    {
@@ -155,4 +150,3 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
 
 
 
-}

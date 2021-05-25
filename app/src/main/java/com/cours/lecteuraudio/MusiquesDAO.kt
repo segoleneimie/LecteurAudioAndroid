@@ -3,11 +3,12 @@ package com.cours.lecteuraudio
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.Environment
+import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
+import androidx.annotation.RequiresApi
 
 class MusiquesDAO {
+    @RequiresApi(Build.VERSION_CODES.R)
     fun getListeMusiques(context: Context): List<Musique>
     {
                 //retrieve song info
@@ -27,7 +28,7 @@ class MusiquesDAO {
                     val fileColumn: Int = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA)
                     // conversion des données remontées en un objet métier :
                     listeMusics.add(Musique(
-                        musicCursor.getInt(musicCursor.getColumnIndex(MediaStore.Audio.Media._ID)),
+                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media._ID)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.SIZE)),

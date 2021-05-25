@@ -1,18 +1,8 @@
 package com.cours.lecteuraudio
 
 import android.Manifest
-import android.app.Activity
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnPreparedListener
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -22,10 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cours.lecteuraudio.bdd.AppDatabaseHelper
-import com.cours.lecteuraudio.bdd.MusiqueFavoriteDTO
-import com.cours.lecteuraudio.bdd.MusiquesFavoritesDAO
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_musique.*
 
 
 class MainActivity : AppCompatActivity() {
