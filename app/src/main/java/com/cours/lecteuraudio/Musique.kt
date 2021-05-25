@@ -2,7 +2,6 @@ package com.cours.lecteuraudio
 
 
 class Musique(
-    var id: String? = null,
     var titre: String? = null,
     val artiste: String? = null,
     var taille: String? = null,

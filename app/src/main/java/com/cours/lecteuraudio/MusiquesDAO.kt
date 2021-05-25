@@ -28,7 +28,7 @@ class MusiquesDAO {
                     val fileColumn: Int = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA)
                     // conversion des données remontées en un objet métier :
                     listeMusics.add(Musique(
-                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media._ID)),
+
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.SIZE)),
