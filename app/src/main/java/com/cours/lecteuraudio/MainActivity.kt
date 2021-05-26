@@ -1,8 +1,14 @@
 package com.cours.lecteuraudio
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.*
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +17,14 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cours.lecteuraudio.bdd.AppDatabaseHelper
 import com.cours.lecteuraudio.bdd.MusiquesFavoritesDAO
 import kotlinx.android.synthetic.main.activity_main.*
+import androidx.core.app.NotificationCompat.Builder
 
 
 class MainActivity : AppCompatActivity() {
@@ -65,6 +73,22 @@ class MainActivity : AppCompatActivity() {
             )
         }
 //         Penser à informer l'utilisateur de la raison de la permission si elle est refusée.
+
+
+        // récupération du notification manager :
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+// cas Android 8 et plus :
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && manager != null)
+        {
+// description du groupe :
+            val channel = NotificationChannel(
+                "testNotif",
+                "Nom du groupe",
+                NotificationManager.IMPORTANCE_HIGH)
+            channel.description = "description du groupe"
+// comportement des notifications du groupe :
+            manager.createNotificationChannel(channel)
+        }
 
     }
 
@@ -138,6 +162,7 @@ class MainActivity : AppCompatActivity() {
     fun mainPlay(view: View)
     {
         Log.d("mainPlay", "main play ok")
+        notifications()
 
 //      START MUSIC SERVICE
         val intent = Intent(this, MusicService::class.java)
@@ -145,6 +170,8 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("musiqueURI", "${listeMusiques[0].uri}")
 //                itemView.context.bindService(intent, connexion, itemView)
         startService(intent)
+
+
     }
 
     fun mainPause(view: View)
@@ -224,7 +251,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    fun notifications() {
 
+        val builder = Builder(this, "testNotif")
+            .setContentTitle("Ma notification")
+            .setSmallIcon(R.drawable.ic_baseline_library_music_24)
+            .setAutoCancel(true)
+            .setContentText("Bienvenue !")
+        // action de retour simple :
+        val mainIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, mainIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+        builder.setContentIntent(pendingIntent)
+        // affichage notification (si ID existant, remplace la précédente) :
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (manager != null)
+        {
+            manager.notify(123, builder.build());
+        }
+        Log.d("NOTIF", manager.toString() )
+        Log.d("NOTIF", builder.toString() )
+
+
+    }
 
 
 
