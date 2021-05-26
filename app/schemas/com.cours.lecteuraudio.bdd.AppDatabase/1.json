@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a71b009ffa7f3f6c85dbf80d62fa7c8f",
+    "identityHash": "22af629ac524082b378c9146a34cbfc9",
     "entities": [
       {
         "tableName": "musiquesFavorites",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`musiqueId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `titre` TEXT, `artiste` TEXT, `taille` TEXT, `duree` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uri` TEXT NOT NULL, `titre` TEXT, `artiste` TEXT, `taille` TEXT, `duree` TEXT, PRIMARY KEY(`uri`))",
         "fields": [
           {
-            "fieldPath": "musiqueId",
-            "columnName": "musiqueId",
-            "affinity": "INTEGER",
+            "fieldPath": "uri",
+            "columnName": "uri",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -41,9 +41,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "musiqueId"
+            "uri"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -52,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a71b009ffa7f3f6c85dbf80d62fa7c8f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22af629ac524082b378c9146a34cbfc9')"
     ]
   }
 }

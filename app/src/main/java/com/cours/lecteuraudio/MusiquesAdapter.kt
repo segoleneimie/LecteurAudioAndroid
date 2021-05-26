@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
@@ -63,6 +64,7 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
         return MusiqueViewHolder(viewMusique)
 
 
+
     }
 
     // Renseigne le contenu de chaque vue item :
@@ -71,8 +73,8 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
         holder.textViewTitreMusique.text = listeMusique[position].titre
         holder.textViewTailleMusique.text = listeMusique[position].taille
         holder.textViewDureeMusique.text = listeMusique[position].duree
-        holder.buttonSupprimeFav.isVisible = false
-        holder.buttonEnregistreFav.context
+        holder.buttonSupprimeFav.isVisible = listeMusique[position].favoris
+        holder.buttonEnregistreFav.isVisible = !listeMusique[position].favoris
     }
 
     override fun getItemCount(): Int = listeMusique.size
@@ -92,10 +94,12 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 musiqueFav.artiste = musique.artiste
                 musiqueFav.taille = musique.taille
                 musiqueFav.duree = musique.duree
+                musiqueFav.uri = musique.uri
+                musique.favoris = true
                 val context = buttonEnregistreFav.context
                 AppDatabaseHelper.getDatabase(context as Context).musiquesFavoritesDAO().insert(musiqueFav)
-                buttonSupprimeFav.isVisible = !buttonSupprimeFav.isVisible
-                buttonEnregistreFav.isVisible = !buttonEnregistreFav.isVisible
+                buttonSupprimeFav.isVisible = musique.favoris
+                buttonEnregistreFav.isVisible = !musique.favoris
 
                 Log.d("FAVORIS", "enregistre favoris")
             }
@@ -106,10 +110,13 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 musiqueFav.artiste = musique.artiste
                 musiqueFav.taille = musique.taille
                 musiqueFav.duree = musique.duree
-                val context = buttonEnregistreFav.context
+                musiqueFav.uri = musique.uri
+                musique.favoris = false
+                val context = buttonSupprimeFav.context
                 AppDatabaseHelper.getDatabase(context).musiquesFavoritesDAO().delete(musiqueFav)
-                buttonSupprimeFav.isVisible = !buttonSupprimeFav.isVisible
-                buttonEnregistreFav.isVisible = !buttonEnregistreFav.isVisible
+                buttonSupprimeFav.isVisible = musique.favoris
+                buttonEnregistreFav.isVisible = !musique.favoris
+
                 Log.d("FAVORIS", "supprime favoris")
             }
             textViewTitreMusique.setOnClickListener {
@@ -120,6 +127,7 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 Log.d("playItem", "click item ok")
 //        Log.i("tag", "nombre : ${musicService?.getNombre()}")
                 val musiqueURI = musique.uri
+//                textViewTitreMusique.setTypeface(textViewTitreMusique.typeface, Typeface.BOLD)
 
 //        START MUSIC SERVICE
                 val intent = Intent(itemView.context, MusicService::class.java)
@@ -133,7 +141,14 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
         }
 
     }
-
+    fun onItemDismiss(position: Int)
+    {
+        if (position > -1)
+        {
+            listeMusique.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
 }
 
 

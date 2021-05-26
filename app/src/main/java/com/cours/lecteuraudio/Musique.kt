@@ -6,5 +6,6 @@ class Musique(
     val artiste: String? = null,
     var taille: String? = null,
     var duree: String? = null,
-    var uri: String? = null
+    var uri: String = "0",
+    var favoris: Boolean = false
 )

@@ -3,16 +3,19 @@ package com.cours.lecteuraudio
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cours.lecteuraudio.bdd.AppDatabaseHelper
+import com.cours.lecteuraudio.bdd.MusiquesFavoritesDAO
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -62,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 //         Penser à informer l'utilisateur de la raison de la permission si elle est refusée.
+
     }
 
     override fun onRequestPermissionsResult(
@@ -91,11 +95,28 @@ class MainActivity : AppCompatActivity() {
     private fun afficherMusiques()
     {
         Log.d("afficherMusics", "called")
+        //                gestion bouton affichage bouton liste des favoris
         buttonListeFavoris.isVisible = false
         buttonGetListeFavoris.isVisible = true
         // chargement :
         musiquesDAO = MusiquesDAO()
         listeMusiques = musiquesDAO.getListeMusiques(this)
+//        comparaison des listes pour programmer l'affichage des favoris
+        val musiquesFavoritesDAO = AppDatabaseHelper.getDatabase(this).musiquesFavoritesDAO()
+        val listeMusiquesFavorites = musiquesFavoritesDAO.getListeMusiquesFavorites()
+        if (listeMusiquesFavorites.size != 0) {
+            listeMusiques.forEach {musique ->
+                val newList = listeMusiquesFavorites.find { musicFav ->
+                     musicFav.uri == musique.uri
+                }
+                if (newList != null) {
+                    musique.favoris = true
+                }
+
+            }
+
+        }
+
 
         // affichage de la liste de contacts :
 //        val stringBuilderMusics = StringBuilder()
@@ -107,6 +128,7 @@ class MainActivity : AppCompatActivity() {
         // adapter :
         val musiquesAdapter = MusiquesAdapter(listeMusiques as MutableList<Musique>)
         liste_musiques.adapter = musiquesAdapter
+
 
         // layout manager, décrivant comment les items sont disposés :
         val layoutManager = LinearLayoutManager(this)
@@ -156,7 +178,7 @@ class MainActivity : AppCompatActivity() {
             afficherMusiques()
         } else {
 
-            liste_musiques.adapter = null
+
             Log.d("FAVORIS", "charge liste")
             // chargement :
             val musiquesFavoritesDAO = AppDatabaseHelper.getDatabase(this).musiquesFavoritesDAO()
@@ -166,7 +188,7 @@ class MainActivity : AppCompatActivity() {
 
             if (!listeMusiquesFavorites.isNullOrEmpty())
             {
-
+                liste_musiques.adapter = null
                 val favorisList = mutableListOf<Musique>()
                 for (a in 0..listeMusiquesFavorites.lastIndex) {
 
@@ -176,7 +198,9 @@ class MainActivity : AppCompatActivity() {
                                 it,
                                 it1,
                                 listeMusiquesFavorites[a].taille,
-                                listeMusiquesFavorites[a].duree
+                                listeMusiquesFavorites[a].duree,
+                                listeMusiquesFavorites[a].uri,
+                                true
                             )
                         }
                     }?.let { favorisList.add(it) }
@@ -185,12 +209,13 @@ class MainActivity : AppCompatActivity() {
                         MusiquesAdapter(it.toMutableList())
                     }
                     liste_musiques.adapter = liste
-
                     // layout manager, décrivant comment les items sont disposés :
                     val layoutManager = LinearLayoutManager(this)
                     liste_musiques.layoutManager = layoutManager
 
                 }
+
+//                gestion bouton affichage bouton liste des favoris
                 buttonGetListeFavoris.isVisible = !buttonGetListeFavoris.isVisible
                 buttonListeFavoris.isVisible = !buttonListeFavoris.isVisible
 
@@ -198,10 +223,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"il n'y a pas de favoris d'enregistrés",Toast.LENGTH_LONG).show()
             }
         }
-
-
-
     }
+
 
 
 
