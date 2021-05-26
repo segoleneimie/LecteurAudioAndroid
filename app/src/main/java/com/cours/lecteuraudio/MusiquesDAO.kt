@@ -31,8 +31,7 @@ class MusiquesDAO {
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.SIZE)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),
-                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)),
-                        musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA))
                     ))
                 }
             }
