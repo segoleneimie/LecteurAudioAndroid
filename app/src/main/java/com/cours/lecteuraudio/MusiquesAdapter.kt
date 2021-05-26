@@ -141,14 +141,7 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
         }
 
     }
-    fun onItemDismiss(position: Int)
-    {
-        if (position > -1)
-        {
-            listeMusique.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
+
 }
 
 
