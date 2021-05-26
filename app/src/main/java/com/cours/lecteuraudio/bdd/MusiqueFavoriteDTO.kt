@@ -11,7 +11,8 @@ class MusiqueFavoriteDTO(
     var titre: String? = null,
     var artiste: String? = null,
     var taille: String? = null,
-    var duree: String? = null)
+    var duree: String? = null,
+    var phoneIndex: Int? = null)
 {
 
 }

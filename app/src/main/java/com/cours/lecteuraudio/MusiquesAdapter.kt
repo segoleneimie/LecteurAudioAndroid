@@ -125,27 +125,18 @@ RecyclerView.Adapter<MusiquesAdapter.MusiqueViewHolder>()
                 val intent = Intent(itemView.context, MusicService::class.java)
                 intent.putExtra("action", "PLAY")
                 intent.putExtra("musiqueURI", "$musiqueURI")
+                intent.putExtra("currentPhoneIndex", "$musiqueURI")
 //                itemView.context.bindService(intent, connexion, itemView)
                 itemView.context.startService(intent)
             }
+
         }
 
     }
 
 }
 
-//    fun playItem(itemView: View, musique: Musique)
-//    {
-//        Log.d("playItem", "click item ok")
-////        Log.i("tag", "nombre : ${musicService?.getNombre()}")
-//
-////        START MUSIC SERVICE
-//        val intent = Intent(itemView.context, MusicService::class.java)
-////        intent.putExtra()
-//        bindService(intent, connexion, itemView.context)
-//        itemView.context.startService(intent)
-//
-//    }
+
 
 
 

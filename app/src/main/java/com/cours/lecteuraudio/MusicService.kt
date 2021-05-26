@@ -2,11 +2,14 @@ package com.cours.lecteuraudio
 
 import android.app.Service
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
 
 
 class MusicService : Service(), MediaPlayer.OnPreparedListener {
@@ -27,6 +30,7 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
     {
         super.onCreate()
     }
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
     {
         Log.d("onStartCommand", "$intent.action")
@@ -37,12 +41,47 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         when (action) {
             "PLAY" -> {
                 Log.d("PLAY", "PLAY called")
+
+                if (mediaPlayer?.isPlaying == true) {
+                    mediaPlayer!!.stop()
+                }
                 mediaPlayer = MediaPlayer().apply {
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .build()
+                    )
                     setDataSource(this@MusicService, Uri.parse(musiquePath))
-                    prepare()
-                    start()
+                    setOnPreparedListener(this@MusicService)
+                    prepareAsync() // prepare async to not block main thread
                 }
             }
+            "PAUSE" -> {
+                mediaPlayer!!.pause()
+            }
+            "STOP" -> {
+                mediaPlayer!!.stop()
+            }
+
+        }
+
+        if (mediaPlayer!!.isPlaying) {
+
+//            audio_one.setBackgroundColor(Color.RED)
+//            audio_one.isClickable = false
+//            audio_two.isClickable = false
+        }
+
+        mediaPlayer!!.setOnCompletionListener {
+//            audio_one.setBackgroundColor(Color.GRAY)
+//            audio_one.isClickable = true
+//            audio_two.isClickable = true
+            Log.d("setOnCompletionListener", "setOnCompletionListener called")
+
+            it.release()
+            it.reset()
+//            goNextAudio()
 
         }
 

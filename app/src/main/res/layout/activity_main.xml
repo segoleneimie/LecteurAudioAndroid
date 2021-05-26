@@ -43,19 +43,26 @@
         >
 
         <Button
+            android:id="@+id/mainPlayButton"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_baseline_play_arrow_24" />
+            android:background="@drawable/ic_baseline_play_arrow_24"
+            android:onClick="mainPlay"
+            />
 
         <Button
+            android:id="@+id/mainPause"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_baseline_pause_24" />
+            android:background="@drawable/ic_baseline_pause_24"
+            android:onClick="mainPause"/>
 
         <Button
+            android:id="@+id/mainStop"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_baseline_stop_24" />
+            android:background="@drawable/ic_baseline_stop_24"
+            android:onClick="mainStop"/>
 
     </LinearLayout>
 

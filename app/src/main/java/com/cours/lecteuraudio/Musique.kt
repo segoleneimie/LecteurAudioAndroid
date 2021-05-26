@@ -6,4 +6,6 @@ class Musique(
     val artiste: String? = null,
     var taille: String? = null,
     var duree: String? = null,
-    var uri: String? = null)
+    var uri: String? = null,
+    var phoneIndex: Int? = null
+)

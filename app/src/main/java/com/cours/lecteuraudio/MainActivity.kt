@@ -1,6 +1,7 @@
 package com.cours.lecteuraudio
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +18,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-//    // Référence :
+    private lateinit var listeMusiques: List<Musique>
+    private lateinit var musiquesDAO: MusiquesDAO
+
+    //    // Référence :
 //    private var musicService: MusicService? = null
 //
 //    // Callback pour le binding, via un ServiceConnection :
@@ -90,8 +94,8 @@ class MainActivity : AppCompatActivity() {
         buttonListeFavoris.isVisible = false
         buttonGetListeFavoris.isVisible = true
         // chargement :
-        val musiquesDAO = MusiquesDAO()
-        val listeMusiques = musiquesDAO.getListeMusiques(this)
+        musiquesDAO = MusiquesDAO()
+        listeMusiques = musiquesDAO.getListeMusiques(this)
 
         // affichage de la liste de contacts :
 //        val stringBuilderMusics = StringBuilder()
@@ -109,32 +113,39 @@ class MainActivity : AppCompatActivity() {
         liste_musiques.layoutManager = layoutManager
     }
 
-//    fun playItem(view: View)
-//    {
-//        Log.d("playItem", "click item ok")
-//        Log.i("tag", "nombre : ${musicService?.getNombre()}")
-//
-////        START MUSIC SERVICE
-//        val intent = Intent(this, MusicService::class.java)
-////        intent.putExtra()
-//        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
-//        startService(intent)
-//
-//    }
+    fun mainPlay(view: View)
+    {
+        Log.d("mainPlay", "main play ok")
 
+//      START MUSIC SERVICE
+        val intent = Intent(this, MusicService::class.java)
+        intent.putExtra("action", "PLAY")
+        intent.putExtra("musiqueURI", "${listeMusiques[0].uri}")
+//                itemView.context.bindService(intent, connexion, itemView)
+        startService(intent)
+    }
 
+    fun mainPause(view: View)
+    {
+        Log.d("mainPause", "main pause ok")
 
-//    override fun onStart()
-//    {
-//        super.onStart()
-//        val intent = Intent(this, MusicService::class.java)
-//        bindService(intent, connexion, Context.BIND_AUTO_CREATE)
-//    }
-//    override fun onStop()
-//    {
-//        super.onStop()
-//        musicService?.run { unbindService(connexion) }
-//    }
+//      USE MUSIC SERVICE
+        val intent = Intent(this, MusicService::class.java)
+        intent.putExtra("action", "PAUSE")
+//                itemView.context.bindService(intent, connexion, itemView)
+        startService(intent)
+    }
+
+    fun mainStop(view: View)
+    {
+        Log.d("mainStop", "main stop ok")
+
+//      USE MUSIC SERVICE
+        val intent = Intent(this, MusicService::class.java)
+        intent.putExtra("action", "STOP")
+//                itemView.context.bindService(intent, connexion, itemView)
+        startService(intent)
+    }
 
     /**
      * affiche les musiques favorites

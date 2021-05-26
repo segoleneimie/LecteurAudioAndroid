@@ -8,7 +8,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 
 class MusiquesDAO {
-    @RequiresApi(Build.VERSION_CODES.R)
+
     fun getListeMusiques(context: Context): List<Musique>
     {
                 //retrieve song info
@@ -25,15 +25,14 @@ class MusiquesDAO {
             {
                 while (musicCursor.moveToNext())
                 {
-                    val fileColumn: Int = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA)
                     // conversion des données remontées en un objet métier :
                     listeMusics.add(Musique(
-
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.SIZE)),
                         musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),
-                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA))
+                        musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA)),
+                        musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA)
                     ))
                 }
             }
