@@ -75,20 +75,7 @@ class MainActivity : AppCompatActivity() {
 //         Penser à informer l'utilisateur de la raison de la permission si elle est refusée.
 
 
-        // récupération du notification manager :
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-// cas Android 8 et plus :
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && manager != null)
-        {
-// description du groupe :
-            val channel = NotificationChannel(
-                "testNotif",
-                "Nom du groupe",
-                NotificationManager.IMPORTANCE_HIGH)
-            channel.description = "description du groupe"
-// comportement des notifications du groupe :
-            manager.createNotificationChannel(channel)
-        }
+
 
     }
 
@@ -162,7 +149,6 @@ class MainActivity : AppCompatActivity() {
     fun mainPlay(view: View)
     {
         Log.d("mainPlay", "main play ok")
-        notifications()
 
 //      START MUSIC SERVICE
         val intent = Intent(this, MusicService::class.java)
@@ -250,29 +236,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"il n'y a pas de favoris d'enregistrés",Toast.LENGTH_LONG).show()
             }
         }
-    }
-    fun notifications() {
-
-        val builder = Builder(this, "testNotif")
-            .setContentTitle("Ma notification")
-            .setSmallIcon(R.drawable.ic_baseline_library_music_24)
-            .setAutoCancel(true)
-            .setContentText("Bienvenue !")
-        // action de retour simple :
-        val mainIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, mainIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
-        builder.setContentIntent(pendingIntent)
-        // affichage notification (si ID existant, remplace la précédente) :
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (manager != null)
-        {
-            manager.notify(123, builder.build());
-        }
-        Log.d("NOTIF", manager.toString() )
-        Log.d("NOTIF", builder.toString() )
-
-
     }
 
 

@@ -1,6 +1,10 @@
 package com.cours.lecteuraudio
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -10,6 +14,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 
 
 class MusicService : Service(), MediaPlayer.OnPreparedListener {
@@ -29,6 +34,18 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
     override fun onCreate()
     {
         super.onCreate()
+        // récupération du notification manager :
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // cas Android 8 et plus :
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && manager != null)
+        {
+            // description du groupe :
+            val channel = NotificationChannel(
+                "testNotif",
+                "Nom du groupe",
+                NotificationManager.IMPORTANCE_HIGH)
+            manager.createNotificationChannel(channel)
+        }
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
@@ -56,55 +73,72 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
                     setOnPreparedListener(this@MusicService)
                     prepareAsync() // prepare async to not block main thread
                 }
+
+                val builder = NotificationCompat.Builder(this, "testNotif")
+                    .setContentTitle("Lecteur Audio")
+                    .setSmallIcon(R.drawable.ic_baseline_library_music_24)
+                    .setAutoCancel(true)
+                // action de retour simple :
+                val mainIntent = Intent(this, MainActivity::class.java)
+                val pendingIntent = PendingIntent.getActivity(
+                    this, 0, mainIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                builder.setContentIntent(pendingIntent)
+                // affichage notification (si ID existant, remplace la précédente) :
+                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                if (manager != null) {
+                    manager.notify(123, builder.build());
+                }
             }
-            "PAUSE" -> {
-                mediaPlayer!!.pause()
-            }
-            "STOP" -> {
-                mediaPlayer!!.stop()
+                "PAUSE" -> {
+                    mediaPlayer!!.pause()
+                }
+                "STOP" -> {
+                    mediaPlayer!!.stop()
+                }
+
             }
 
-        }
-
-        if (mediaPlayer!!.isPlaying) {
+            if (mediaPlayer!!.isPlaying) {
 
 //            audio_one.setBackgroundColor(Color.RED)
 //            audio_one.isClickable = false
 //            audio_two.isClickable = false
-        }
+            }
 
-        mediaPlayer!!.setOnCompletionListener {
+                    mediaPlayer!!.setOnCompletionListener {
 //            audio_one.setBackgroundColor(Color.GRAY)
 //            audio_one.isClickable = true
 //            audio_two.isClickable = true
-            Log.d("setOnCompletionListener", "setOnCompletionListener called")
+                Log.d("setOnCompletionListener", "setOnCompletionListener called")
 
-            it.release()
-            it.reset()
+                it.release()
+                it.reset()
 //            goNextAudio()
 
+            }
+
+
+                return super.onStartCommand(intent, flags, startId)
         }
 
+        /** Called when MediaPlayer is ready */
+        override fun onPrepared(mediaPlayer: MediaPlayer) {
+            mediaPlayer.start()
+        }
 
-        return super.onStartCommand(intent, flags, startId)
+        override fun onBind(intent: Intent): IBinder = binder
+
+        // Méthode d'exemple exposée aux composants clients :
+        fun getNombre() = Math.random()
+
+        override fun onUnbind(intent: Intent?): Boolean
+        {
+            return super.onUnbind(intent)
+        }
+        override fun onDestroy()
+        {
+            super.onDestroy()
+        }
     }
-
-    /** Called when MediaPlayer is ready */
-    override fun onPrepared(mediaPlayer: MediaPlayer) {
-        mediaPlayer.start()
-    }
-
-    override fun onBind(intent: Intent): IBinder = binder
-
-    // Méthode d'exemple exposée aux composants clients :
-    fun getNombre() = Math.random()
-
-    override fun onUnbind(intent: Intent?): Boolean
-    {
-        return super.onUnbind(intent)
-    }
-    override fun onDestroy()
-    {
-        super.onDestroy()
-    }
-}
