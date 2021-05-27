@@ -13,8 +13,10 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.cours.lecteuraudio.R.layout.notification
 
 
 class MusicService : Service(), MediaPlayer.OnPreparedListener {
@@ -73,11 +75,17 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
                     setOnPreparedListener(this@MusicService)
                     prepareAsync() // prepare async to not block main thread
                 }
-
+// notifications
+                // branchement entre le xml et la notification :
+                val remoteViews = RemoteViews(packageName, R.layout.notification)
+//                remoteViews.setOnClickPendingIntent(R.id.mainPlayButton, pendingIntentPlay)
+//                remoteViews.setOnClickPendingIntent(R.id.mainPause, pendingIntentPause)
+                  remoteViews.setTextViewText(R.id.titre, intent?.extras?.getString("musiqueTitre"))
                 val builder = NotificationCompat.Builder(this, "testNotif")
                     .setContentTitle("Lecteur Audio")
                     .setSmallIcon(R.drawable.ic_baseline_library_music_24)
                     .setAutoCancel(true)
+                    .setContent(remoteViews)
                 // action de retour simple :
                 val mainIntent = Intent(this, MainActivity::class.java)
                 val pendingIntent = PendingIntent.getActivity(

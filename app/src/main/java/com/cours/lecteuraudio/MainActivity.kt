@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, MusicService::class.java)
         intent.putExtra("action", "PLAY")
         intent.putExtra("musiqueURI", "${listeMusiques[0].uri}")
+        intent.putExtra("musiqueTitre", "${listeMusiques[0].titre}")
 //                itemView.context.bindService(intent, connexion, itemView)
         startService(intent)
 
